@@ -20,7 +20,7 @@ public class Trans {
 
     //DDL Create
     public static final String CreateTablePersonas = "CREATE TABLE " + TablePersonas + " ( " +
-            "id INTEGER PRIMARY KEY AUTOINV|CREMENT, nombres TEXT, apellidos TEXT, edad INTEGER, correo TEXT, foto TEXT";
+            "id INTEGER PRIMARY KEY AUTOINCREMENT, nombres TEXT, apellidos TEXT, edad INTEGER, correo TEXT, foto TEXT )";
 
     public static final String SelectAllPerson = "SELECT * FROM " + TablePersonas;
     public static final String DropTablePersonas = "DROP TABLE IF EXISTS " + TablePersonas;
