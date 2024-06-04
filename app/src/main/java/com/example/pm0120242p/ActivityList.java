@@ -3,6 +3,7 @@ package com.example.pm0120242p;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import androidx.activity.EdgeToEdge;
@@ -22,6 +23,7 @@ public class ActivityList extends AppCompatActivity {
     SQLiteConexion conexion;
     ListView listPerson;
     ArrayList<Personas> lista;
+    ArrayList<String> Arreglo;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,6 +39,9 @@ public class ActivityList extends AppCompatActivity {
         listPerson = (ListView) findViewById(R.id.listPerson);
 
         ObtenerInfo();
+
+        ArrayAdapter adp = new ArrayAdapter(this, android.R.layout.simple_list_item_1,Arreglo);
+        listPerson.setAdapter(adp);
 
     }
 
@@ -57,6 +62,20 @@ public class ActivityList extends AppCompatActivity {
             person.setCorreo(cursor.getString(4));
 
             lista.add(person);
+        }
+
+        cursor.close();
+
+        FillData();
+
+    }
+
+    private void FillData() {
+        Arreglo = new ArrayList<String>();
+        for(int i=0; i<lista.size();i++){
+            Arreglo.add(lista.get(i).getId() + " " +
+                    lista.get(i).getNombres() + " " +
+                    lista.get(i).getApellido());
         }
     }
 }
