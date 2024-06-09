@@ -4,4 +4,5 @@
     <string name="IngresoApellido">Ingrese su Apellido</string>
     <string name="Edad">Ingrese su Edad</string>
     <string name="Correo">Ingrese su Correo</string>
+    <string name="TomarFoto">Tomar Foto</string>
 </resources>
