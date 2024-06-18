@@ -11,6 +11,8 @@
         android:required="true"/>
 
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <queries>
         <!-- Browser -->
@@ -40,18 +42,29 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PM0120242P"
         tools:targetApi="31">
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.example.pmo120232p.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths"></meta-data>
+        </provider>
+
         <activity
             android:name=".ActivityPhoto"
-            android:exported="false" />
-        <activity
-            android:name=".ActivityCombo"
-            android:exported="true">
+            android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".ActivityCombo"
+            android:exported="true"/>
         <activity
             android:name=".ActivityList"
             android:exported="true" />
