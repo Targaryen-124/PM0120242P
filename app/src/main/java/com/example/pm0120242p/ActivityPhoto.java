@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -63,7 +64,8 @@ public class ActivityPhoto extends AppCompatActivity {
             ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.CAMERA},peticion_acceso_camara);
         }
         else{
-           TomarFoto();
+           //TomarFoto();
+            dispatchTakePictureIntent();
         }
     }
 
@@ -73,7 +75,8 @@ public class ActivityPhoto extends AppCompatActivity {
 
         if(requestCode== peticion_acceso_camara){
             if(grantResults.length>0 && grantResults[0]==PackageManager.PERMISSION_GRANTED){
-                TomarFoto();
+                //TomarFoto();
+                dispatchTakePictureIntent();
             }
             else {
                 Toast.makeText(getApplicationContext(),"Acceso Denegado", Toast.LENGTH_LONG).show();
@@ -93,14 +96,15 @@ public class ActivityPhoto extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if(requestCode==peticion_captura_imagen && resultCode == RESULT_OK){
-            if(data != null) {
-                Bundle extras = data.getExtras();
-                if(extras != null) {
-                    Bitmap imagen = (Bitmap) extras.get("data");
-
-                    ObjetoImagen.setImageBitmap(imagen);
-                }
-            }
+//            if(data != null) {
+//                Bundle extras = data.getExtras();
+//                if(extras != null) {
+//                    Bitmap imagen = (Bitmap) extras.get("data");
+//                  ObjetoImagen.setImageBitmap(imagen);
+//                }
+//            }
+            setPic();
+            galleryAddPic();
         }
     }
 
@@ -117,6 +121,7 @@ public class ActivityPhoto extends AppCompatActivity {
 
         // Save a file: path for use with ACTION_VIEW intents
         currentPhotoPath = image.getAbsolutePath();
+        PathImagen = currentPhotoPath; // Set the PathImagen variable
         return image;
     }
 
@@ -138,6 +143,7 @@ public class ActivityPhoto extends AppCompatActivity {
                         "com.example.pmo120232p.fileprovider",
                         photoFile);
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                //currentPhotoPath = photoFile.getAbsolutePath(); // Set the currentPhotoPath variable
                 startActivityForResult(takePictureIntent, peticion_captura_imagen);
             }
         }
@@ -149,6 +155,32 @@ public class ActivityPhoto extends AppCompatActivity {
         Uri contentUri = Uri.fromFile(f);
         mediaScanIntent.setData(contentUri);
         this.sendBroadcast(mediaScanIntent);
+    }
+
+    private void setPic() {
+        // Get the dimensions of the View
+        int targetW = ObjetoImagen.getWidth();
+        int targetH = ObjetoImagen.getHeight();
+
+        // Get the dimensions of the bitmap
+        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+        bmOptions.inJustDecodeBounds = true;
+
+        BitmapFactory.decodeFile(currentPhotoPath, bmOptions);
+
+        int photoW = bmOptions.outWidth;
+        int photoH = bmOptions.outHeight;
+
+        // Determine how much to scale down the image
+        int scaleFactor = Math.max(1, Math.min(photoW/targetW, photoH/targetH));
+
+        // Decode the image file into a Bitmap sized to fill the View
+        bmOptions.inJustDecodeBounds = false;
+        bmOptions.inSampleSize = scaleFactor;
+        bmOptions.inPurgeable = true;
+
+        Bitmap bitmap = BitmapFactory.decodeFile(currentPhotoPath, bmOptions);
+        ObjetoImagen.setImageBitmap(bitmap);
     }
 
 }
