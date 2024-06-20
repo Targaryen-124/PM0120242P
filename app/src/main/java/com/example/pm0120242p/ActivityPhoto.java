@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -25,9 +26,11 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.Base64;
 import java.util.Date;
 
 public class ActivityPhoto extends AppCompatActivity {
@@ -36,7 +39,7 @@ public class ActivityPhoto extends AppCompatActivity {
     ImageView ObjetoImagen;
     Button btncaptura;
     String PathImagen;
-    String currentPhotoPath;
+    String currentPhotoPath, image64;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,7 +68,7 @@ public class ActivityPhoto extends AppCompatActivity {
         }
         else{
            //TomarFoto();
-            dispatchTakePictureIntent();
+           dispatchTakePictureIntent();
         }
     }
 
@@ -96,13 +99,16 @@ public class ActivityPhoto extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if(requestCode==peticion_captura_imagen && resultCode == RESULT_OK){
-//            if(data != null) {
-//                Bundle extras = data.getExtras();
-//                if(extras != null) {
-//                    Bitmap imagen = (Bitmap) extras.get("data");
-//                  ObjetoImagen.setImageBitmap(imagen);
-//                }
-//            }
+        //    if(data != null) {
+        //        Bundle extras = data.getExtras();
+        //        if(extras != null) {
+        //            Bitmap imagen = (Bitmap) extras.get("data");
+        //            ObjetoImagen.setImageBitmap(imagen);
+        //            image64 = ConvertImageBase64(imagen); //Para guardar en blob en base de datos
+
+        //            Log.i("Image",image64);
+        //        }
+        //    }
             setPic();
             galleryAddPic();
         }
@@ -181,6 +187,15 @@ public class ActivityPhoto extends AppCompatActivity {
 
         Bitmap bitmap = BitmapFactory.decodeFile(currentPhotoPath, bmOptions);
         ObjetoImagen.setImageBitmap(bitmap);
+    }
+
+    private String ConvertImageBase64(Bitmap bitmap){
+        ByteArrayOutputStream byteImage = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 50, byteImage);
+
+        byte[] byteArray = byteImage.toByteArray();
+
+        return android.util.Base64.encodeToString(byteArray, android.util.Base64.DEFAULT);
     }
 
 }
