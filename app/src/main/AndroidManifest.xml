@@ -1,23 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-<!-- Permisos -->
+    <!-- Permisos -->
     <uses-feature
         android:name="android.hardware.camera"
-        android:required="true"/>
-
+        android:required="true" />
     <uses-feature
         android:name="android.hardware.camera2"
-        android:required="true"/>
+        android:required="true" />
 
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <queries>
+
         <!-- Browser -->
         <intent>
             <action android:name="android.intent.action.VIEW" />
+
             <data android:scheme="http" />
         </intent>
 
@@ -42,6 +43,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PM0120242P"
         tools:targetApi="31">
+        <activity
+            android:name=".ActivityVideo"
+            android:exported="false" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -50,12 +54,12 @@
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths"></meta-data>
+                android:resource="@xml/file_paths" />
         </provider>
 
         <activity
             android:name=".ActivityPhoto"
-            android:exported="true" >
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -64,7 +68,7 @@
         </activity>
         <activity
             android:name=".ActivityCombo"
-            android:exported="true"/>
+            android:exported="true" />
         <activity
             android:name=".ActivityList"
             android:exported="true" />

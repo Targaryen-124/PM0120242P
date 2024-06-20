@@ -5,4 +5,5 @@
     <string name="Edad">Ingrese su Edad</string>
     <string name="Correo">Ingrese su Correo</string>
     <string name="TomarFoto">Tomar Foto</string>
+    <string name="Grabar">Grabar</string>
 </resources>
